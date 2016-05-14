@@ -15,24 +15,28 @@ use yii\widgets\ActiveForm;
 <?
     $form = ActiveForm::begin([
     'id' => 'login-form',
-    'options' => ['class' => 'form-horizontal'],
+    'options' => ['class' => 'form-inline'],
     ]) ?>
-<?= $form->field($model, 'count') ?>
-<?= $form->field($model, 'expires')->widget(\yii\jui\DatePicker::classname(),[
-    'language' => 'ru',
-    'dateFormat' => 'yyyy-MM-dd',
-    'inline' => false,
-    'clientOptions' => [
-        'changeMonth' => true,
-        'yearRange' => '1925:2005',
-        'changeYear' => true,
-        'showOn' => 'button',
-        //'buttonImage' => 'images/calendar.gif',
-        'buttonImageOnly' => false,
-        'buttonText' => 'Выберите дату',
+<div class="form-group">
+    <?= $form->field($model, 'count')->textInput(['type'=>'number']) ?>
+</div>
+<div class="form-group">
+    <?= $form->field($model, 'expires')->widget(\yii\jui\DatePicker::classname(),[
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+        'inline' => false,
+        'clientOptions' => [
+            'changeMonth' => true,
+            'yearRange' => '2016:2020',
+            'changeYear' => true,
+            'showOn' => 'button',
+            //'buttonImage' => 'images/calendar.gif',
+            'buttonImageOnly' => false,
+            'buttonText' => 'Выберите дату',
 
-    ],]) ?>
+        ],]) ?>
 
+</div>
     <div class="form-group">
         <div class="col-lg-offset-1 col-lg-11">
             <?= Html::submitButton('Сгенерировать', ['class' => 'btn btn-lg btn-primary']) ?>

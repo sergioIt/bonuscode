@@ -15,6 +15,8 @@ class BonusCodeGenerator extends Model{
     public $count;
     public $expires;
 
+    private static $salt = 'sfer4389kdfn';
+
     public function rules(){
 
         return [
@@ -38,16 +40,25 @@ class BonusCodeGenerator extends Model{
         ];
     }
 
+    /**
+     * Генерирует номер и серию кода
+     * серия одинакова для каждой генерации, номера уникальны
+     * поэтому серия+номер тоже уникальны
+     * @param $count
+     * @param $expires
+     */
     public static function generate($count,$expires){
 
-       // $lastSeries = BonusCode::findOne(['order' => 'id desc']);
+        $initSting = md5(uniqid().self::$salt);
+        $series = substr($initSting,0,BonusCode::SERIES_LENGTH);
 
         for($i=1; $i<=$count; $i++){
 
+            $string = md5(uniqid().self::$salt);
 
             $code = new BonusCode();
-            $code->series = 'AAA';
-            $code->number = (string)$i;
+            $code->series = $series;
+            $code->number = substr($string,BonusCode::SERIES_LENGTH,BonusCode::NUMBER_LENGTH);
             $code->expires = $expires;
             $code->status = BonusCode::STATUS_INACTIVE;
             $code->save();

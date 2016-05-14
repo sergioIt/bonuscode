@@ -17,10 +17,10 @@ use yii\bootstrap\Modal;
 ?>
 <h2>Список бонусных кодов </h2>
 
-<?= Html::a('генератор', Yii::$app->urlManager->createUrl('bonus/create')); ?>
+<?= Html::a('генератор кодов', Yii::$app->urlManager->createUrl('bonus/create'),['role' => 'button', 'class'=> 'btn btn-lg btn-info']); ?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
-    // 'filterModel' => $searchModel,
+     'filterModel' => $searchModel,
     'columns' => [
         'id',
         'series',
@@ -28,42 +28,56 @@ use yii\bootstrap\Modal;
         'created',
         'expires',
         'used',
-        'status',
+        'status' => [
+
+            'attribute' => 'status',
+            'format' => 'html',
+            'value' => function($model){
+
+                if($model->isActive()){
+
+                    return Html::tag('span','активизирован',['class' => 'label label-success']);
+                }
+
+                return Html::tag('span','не активизирован',['class' => 'label label-default']);
+
+            }
+        ],
         'actions' =>
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => 'Действия',
-                'template' => '{view}{update}{delete}',
-/*                'buttons' => [
-                    'view' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span','',
-                            ['class'=>'glyphicon glyphicon-search', 'aria-hidden'=>'true']),
-                            '#',
-                            [
-                                'class' => 'btn_view_test',
-                                'title' => Yii::t('yii', 'Просмотр теста'),
-                                'data-toggle' => 'modal',
-                                'data-target' => '#activity-modal',
-                                'data-id' => $model->id,
-                                'data-url' => \yii::$app->getUrlManager()->createUrl('test/view'),
-                                'padding' => '5px'
-                            ]);
+                'template' => '{activate}{deactivate}{delete}',
+                'buttons' => [
+                    'activate' => function ($url, $model, $key) {
+                        if($model->status == \app\models\BonusCode::STATUS_INACTIVE)
+                        {
+                            return Html::a(Html::tag('span','',['class' => 'glyphicon glyphicon-arrow-up']),$url,
+                                [
+                                    'role' => 'button',
+                                    'class' => 'btn btn-sm btn-success',
+                                    'title' => 'Активировать',
+                                ]);
+                        }
+
+                        return '';
+
                     },
-                    'update' => function ($url, $model, $key) {
-                        return Html::a(Html::tag('span','',
-                            ['class'=>'glyphicon glyphicon-pencil', 'aria-hidden'=>'true']),
-                            '#',
-                            [
-                                'class' => 'btn_update_test',
-                                'title' => Yii::t('yii', 'Обновить'),
-                                'data-toggle' => 'modal',
-                                'data-target' => '#activity-modal',
-                                'data-id' => $model->id,
-                                'data-url' => \yii::$app->getUrlManager()->createUrl('test/update')
-                            ]);
+                    'deactivate' => function ($url, $model, $key) {
+                        if($model->status == \app\models\BonusCode::STATUS_ACTIVE)
+                        {
+                            return Html::a(Html::tag('span','',['class' => 'glyphicon glyphicon-arrow-down']),$url,
+                                [
+                                    'class' => 'btn btn-sm btn-warning',
+                                    'title' => 'Деактивировать',
+                                ]);
+                        }
+
+                        return '';
+
                     }
 
-                ]*/
+                ]
 
             ]
     ]]);

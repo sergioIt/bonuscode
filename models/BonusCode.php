@@ -20,6 +20,11 @@ use yii\db\ActiveRecord;
 class BonusCode extends ActiveRecord
 {
     const STATUS_INACTIVE = 0;
+    const STATUS_ACTIVE = 1;
+    const STATUS_USED = 2;
+
+    const SERIES_LENGTH = 4;
+    const NUMBER_LENGTH = 10;
 
     /**
      * @inheritdoc
@@ -51,12 +56,17 @@ class BonusCode extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'series' => 'Series',
-            'number' => 'Number',
-            'created' => 'Created',
-            'expires' => 'Expires',
-            'used' => 'Used',
-            'status' => 'Status',
+            'series' => 'серия',
+            'number' => 'номер',
+            'created' => 'создан',
+            'expires' => 'истекает',
+            'used' => 'использован',
+            'status' => 'статус',
         ];
+    }
+
+    public function isActive(){
+
+        return $this->status == self::STATUS_ACTIVE;
     }
 }
