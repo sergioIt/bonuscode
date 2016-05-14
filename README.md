@@ -1,13 +1,10 @@
 Yii2 Test task for bonus manage
 ===============================
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](http://www.yiiframework.com/) application best for
-rapidly creating small projects.
+This app perform operations:
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
-
+list,activate,deactivate, delete
+and package codes creation.
 
 
 CONFIGURATION
@@ -15,7 +12,11 @@ CONFIGURATION
 
 ### Database
 
-Edit the file `config/db.php` with real data, for example:
+Database structure can be created by applying migration m160513_133104_create_table_bonus_code.
+ 
+Filled data with demo codes is in init_dump.sql at the root of project.
+
+Edit the file `config/db.php` with your real local data, for example:
 
 ```php
 return [
